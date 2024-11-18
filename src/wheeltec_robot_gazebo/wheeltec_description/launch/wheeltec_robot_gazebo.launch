@@ -1,8 +1,6 @@
 <launch>
     <!--车型参数,由wheeltec_gazebo_control.launch定义导入-->
     <arg name="car_mode"  default="" />
-    <!-- 设置launch文件的参数 -->
-
     <!--机器人模型的起点放置位置xyz坐标-->
     <arg name="x_pos" default="0.0"/>
     <arg name="y_pos" default="0.0"/>

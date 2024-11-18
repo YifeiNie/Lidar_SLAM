@@ -1,7 +1,4 @@
 <launch>
-    <!-- 机器人数量 -->
-    <arg name="ugv_num" value="4"/>
-    <arg name='uav_num' value="1"/>
     <!--选择车型-->
     <arg name="ugv_mode" value="mini_mec"/>
     <!-- world信息 -->
@@ -27,9 +24,39 @@
         <arg name="headless" value="$(arg headless)"/>
     </include>
     <!--打开rviz-->
-    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find wheeltec_gazebo_function)/rviz_config/$(arg car_mode).rviz"/>
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find wheeltec_gazebo_function)/rviz_config/$(arg ugv_mode).rviz"/>
 
-    <!--开启ugv仿真节点-->
+    <!--打开UGV-->
+    <include file="$(find wheeltec_gazebo_control)/launch/single_wheeltec_gazebo.launch">
+        <arg name="ugv_mode" value="$(arg ugv_mode)"/>
+        <arg name="ugv_id" value="1"/>
+        <arg name="init_x" value="0.0"/>
+        <arg name="init_y" value="0.0"/>
+        <arg name="init_z" value="0.0"/>
+    </include>
 
+    <include file="$(find wheeltec_gazebo_control)/launch/single_wheeltec_gazebo.launch">
+        <arg name="ugv_mode" value="$(arg ugv_mode)"/>
+        <arg name="ugv_id" value="2"/>
+        <arg name="init_x" value="0.0"/>
+        <arg name="init_y" value="-1.0"/>
+        <arg name="init_z" value="0.0"/>
+    </include>
+
+    <include file="$(find wheeltec_gazebo_control)/launch/single_wheeltec_gazebo.launch">
+        <arg name="ugv_mode" value="$(arg ugv_mode)"/>
+        <arg name="ugv_id" value="3"/>
+        <arg name="init_x" value="1.0"/>
+        <arg name="init_y" value="-1.0"/>
+        <arg name="init_z" value="0.0"/>
+    </include>
+
+    <include file="$(find wheeltec_gazebo_control)/launch/single_wheeltec_gazebo.launch">
+        <arg name="ugv_mode" value="$(arg ugv_mode)"/>
+        <arg name="ugv_id" value="4"/>
+        <arg name="init_x" value="1.0"/>
+        <arg name="init_y" value="0.0"/>
+        <arg name="init_z" value="0.0"/>
+    </include>
 
 </launch>

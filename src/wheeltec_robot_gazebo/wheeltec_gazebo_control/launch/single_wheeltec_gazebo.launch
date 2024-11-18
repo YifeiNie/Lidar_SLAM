@@ -2,15 +2,33 @@
     <!--选择车型-->
     <arg name="ugv_mode"/>
     <arg name="ugv_id"/>
-    <!-- load the controllers -->
-    <node name="controller_manager" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="wheeltec" args="$(arg ugv_mode)_left_front_wheel_velocity_controller  $(arg ugv_mode)_right_front_wheel_velocity_controller  $(arg ugv_mode)_left_rear_wheel_velocity_controller  $(arg ugv_mode)_right_rear_wheel_velocity_controller  $(arg ugv_mode)_joint_state_controller"/>
-    <!--cmd_vel速度计算并赋值controller command-->
-    <node pkg="wheeltec_gazebo_function" type="Sub_cmd_vel_$(arg ugv_mode).py" name="sub_$(arg ugv_mode)_cmd" output="screen"/>
-    <!--订阅话题推出机器人运动状态-->
-    <node pkg="wheeltec_gazebo_function" type="real_cmd_vel_$(arg ugv_mode).py" name="pub_$(arg ugv_mode)_cmd" output="screen"/>
-    <!--load controller yaml-->
-    <rosparam file="$(find wheeltec_gazebo_control)/config/wheeltec_control_$(arg ugv_mode).yaml" command="load"/>
-    <!--发布odom话题和tf-->
-    <node pkg="wheeltec_gazebo_function" name="gazebo_odometry_node" type="gazebo_odometry.py" output="screen"/>
+    <arg name="init_x"/>
+    <arg name="init_y"/>
+    <arg name="init_z"/>
+    <arg name="roll" value="0.0"/>
+    <arg name="pitch" value="0.0"/>
+    <arg name="yaw" value="0.0"/>
 
+    <group ns="ugv_$(arg ugv_id)">
+        <!--load controller yaml-->
+        <rosparam file="$(find wheeltec_gazebo_control)/config/uni_control_$(arg ugv_mode).yaml" command="load"/>
+        <!-- load the controllers -->
+        <node name="controller_manager" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="$(arg ugv_mode)_left_front_wheel_velocity_controller  $(arg ugv_mode)_right_front_wheel_velocity_controller  $(arg ugv_mode)_left_rear_wheel_velocity_controller  $(arg ugv_mode)_right_rear_wheel_velocity_controller  $(arg ugv_mode)_joint_state_controller"/>
+        <node pkg="wheeltec_gazebo_function" type="my_Sub_cmd_vel_$(arg ugv_mode).py" name="sub_$(arg ugv_mode)_$(arg ugv_id)_cmd" output="screen"/>
+        <!-- 发布odom话题和tf -->
+        <node pkg="wheeltec_gazebo_function" type="my_gazebo_odometry.py" name="gazebo_odometry_node_$(arg ugv_mode)" output="screen"/>
+        <!--订阅话题推出机器人运动状态-->
+        <!-- <node pkg="wheeltec_gazebo_function" type="my_real_cmd_vel_$(arg ugv_mode).py" name="pub_$(arg ugv_mode)_$(arg ugv_id)_cmd" output="screen"/> -->
+
+        <!-- 调用xacro文件解析器 将对应车型的xacro文件转为urdf文件 -->
+        <arg name="model" default="$(find xacro)/xacro '$(find wheeltec_description)/urdf/$(arg ugv_mode)/my_$(arg ugv_mode).xacro'"/>
+        <param name="robot_description" command="$(arg model)" />
+        <!-- 运行robot_state_publisher节点，发布tf  -->
+        <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen">
+            <param name="publish_frequency" type="double" value="50.0" />
+            <param name="tf_prefix" value="ugv_$(arg ugv_id)" />
+        </node>
+        <!-- 在gazebo中加载机器人模型 向gazebo_ros发出服务请求 添加urdf到gazebo中-->
+        <node pkg="gazebo_ros" type="spawn_model" name="spawn_urdf" args="-urdf -model ugv_$(arg ugv_id) -param robot_description -x $(arg init_x) -y $(arg init_y) -z $(arg init_z) -R $(arg roll) -P $(arg pitch) -Y $(arg yaw)"/>
+    </group>
 </launch>
