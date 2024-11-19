@@ -1,21 +1,34 @@
 <?xml version="1.0"?>
 <robot name="wheeltec"
     xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:property name="update_rate" value="20"/>
+    <xacro:property name="resolution" value="0.01"/>
+    <xacro:property name="noise_mean" value="0.01"/>
+    <xacro:property name="noise_stddev" value="0.00"/>
+    <xacro:property name="laser_min_range" value="0.1"/>
+    <xacro:property name="laser_max_range" value="200"/>
+    <xacro:property name="samples" value="20000"/>
+    <xacro:property name="downsample" value="1"/>
+
     <xacro:macro name="laser_livox" params="LA">
         <link name="laser_link">
+            <inertial>
+                <mass value="0.114"/>
+                <origin xyz="0 0 0"/>
+                <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+            </inertial>
             <visual>
                 <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>
-                    <!-- <box size="0.05 0.05 0.05"/> -->
-                    <mesh filename="package://wheeltec_description/meshes/livox_mid360/livox_mid-360-90x.dae" />
+                    <mesh filename="package://wheeltec_description/meshes/livox_mid360/livox_mid360.stl" scale="1 1 1"/>
                 </geometry>
-                <material name="black"/>
             </visual>
             <collision>
-                <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>
-                    <!-- <box size="0.05 0.05 0.05"/> -->
-                    <mesh filename="package://wheeltec_description/meshes/livox_mid360/livox_mid-360-90x.dae" />
+                    <box>
+                        <size>0.05 0.05 0.05</size>
+                    </box>
                 </geometry>
             </collision>
         </link>
@@ -24,40 +37,40 @@
             <material>Gazebo/Gray</material>
             <!--define sensor-->
             <sensor type="ray" name="laser_livox">
-                <visualize>True</visualize>
+                <visualize>false</visualize>
                 <always_on>True</always_on>
-                <update_rate>20</update_rate>
+                <update_rate>${update_rate}</update_rate>
                 <plugin name="gazebo_ros_laser_controller" filename="liblivox_laser_simulation.so">
                     <ray>
                         <scan>
                             <horizontal>
                                 <samples>100</samples>
                                 <resolution>1</resolution>
-                                <min_angle>-3.1415926535897931</min_angle>
-                                <max_angle>3.1415926535897931</max_angle>
+                                <min_angle>-${M_PI}</min_angle>
+                                <max_angle>${M_PI}</max_angle>
                             </horizontal>
                             <vertical>
-                                <samples>50</samples>
+                                <samples>100</samples>
                                 <resolution>1</resolution>
-                                <min_angle>-3.1415926535897931</min_angle>
-                                <max_angle>3.1415926535897931</max_angle>
+                                <min_angle>${-7.22/180*M_PI}</min_angle>
+                                <max_angle>${55.22/180*M_PI}</max_angle>
                             </vertical>
                         </scan>
                         <range>
-                            <min>0.1</min>
-                            <max>40</max>
-                            <resolution>1</resolution>
+                            <min>${laser_min_range}</min>
+                            <max>${laser_max_range}</max>
+                            <resolution>${resolution}</resolution>
                         </range>
                         <noise>
                             <type>gaussian</type>
-                            <mean>0.0</mean>
-                            <stddev>0.0</stddev>
+                            <mean>${noise_mean}</mean>
+                            <stddev>${resolution}</stddev>
                         </noise>
                     </ray>
                     <visualize>True</visualize>
-                    <samples>20000</samples>
-                    <downsample>1</downsample>
-                    <csv_file_name>mid360-real-centr.csv</csv_file_name>
+                    <samples>${samples}</samples>
+                    <downsample>${downsample}</downsample>
+                    <csv_file_name>package://wheeltec_description/meshes/livox_mid360/mid360.csv</csv_file_name>
                     <publish_pointcloud_type>2</publish_pointcloud_type>
                     <ros_topic>ugv_1/lidar</ros_topic>
                     <frameName>ugv_1/laser_link</frameName>

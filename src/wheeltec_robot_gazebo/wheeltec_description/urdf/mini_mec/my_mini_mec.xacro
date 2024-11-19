@@ -7,8 +7,7 @@
     <!--rplidar position-->
     <xacro:property name="rplidar_offset_x" value="0.048632" />
     <xacro:property name="rplidar_offset_y" value="0.00018237" />
-    <!-- <xacro:property name="rplidar_offset_z" value="0.1296" /> -->
-    <xacro:property name="rplidar_offset_z" value="0.0796" />
+    <xacro:property name="rplidar_offset_z" value="0.0996" />
     <!--rplidar scanning angle-->
     <xacro:property name="rplidar_min_angle" value="-180" />
     <xacro:property name="rplidar_max_angle" value="180" />
@@ -45,9 +44,8 @@
     <xacro:include filename="$(find wheeltec_description)/urdf/material.xacro" />
     <xacro:include filename="$(find wheeltec_description)/urdf/mini_mec/my_minimec_transmission.xacro" />
     <xacro:laser_livox LA="laser"/>
-    <!-- <xacro:Livox_Mid360 name="laser_link"/> -->
     <joint name="laser_joint" type="fixed">
-        <origin xyz="${rplidar_offset_x} ${rplidar_offset_y} ${rplidar_offset_z}" rpy="0 0 ${M_PI}" />
+        <origin xyz="${rplidar_offset_x} ${rplidar_offset_y} ${rplidar_offset_z}" rpy="0 0 0" />
         <parent link="base_link"/>
         <child link="laser_link"/>
     </joint>
