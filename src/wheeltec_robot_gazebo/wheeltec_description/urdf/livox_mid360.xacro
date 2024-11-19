@@ -11,7 +11,7 @@
     <xacro:property name="samples" value="20000"/>
     <xacro:property name="downsample" value="1"/>
 
-    <xacro:macro name="laser_livox" params="LA">
+    <xacro:macro name="laser_livox" params="NS">
         <link name="laser_link">
             <inertial>
                 <mass value="0.114"/>
@@ -72,8 +72,8 @@
                     <downsample>${downsample}</downsample>
                     <csv_file_name>package://wheeltec_description/meshes/livox_mid360/mid360.csv</csv_file_name>
                     <publish_pointcloud_type>2</publish_pointcloud_type>
-                    <ros_topic>ugv_1/lidar</ros_topic>
-                    <frameName>ugv_1/laser_link</frameName>
+                    <ros_topic>${NS}/lidar</ros_topic>
+                    <frameName>${NS}/laser_link</frameName>
                 </plugin>
             </sensor>
         </gazebo>

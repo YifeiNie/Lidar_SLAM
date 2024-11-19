@@ -35,7 +35,7 @@
         <arg name="init_z" value="0.0"/>
     </include>
 
-    <!-- <include file="$(find wheeltec_gazebo_control)/launch/single_wheeltec_gazebo.launch">
+    <include file="$(find wheeltec_gazebo_control)/launch/single_wheeltec_gazebo.launch">
         <arg name="ugv_mode" value="$(arg ugv_mode)"/>
         <arg name="ugv_id" value="2"/>
         <arg name="init_x" value="0.0"/>
@@ -57,6 +57,6 @@
         <arg name="init_x" value="1.0"/>
         <arg name="init_y" value="0.0"/>
         <arg name="init_z" value="0.0"/>
-    </include> -->
+    </include>
 
 </launch>
