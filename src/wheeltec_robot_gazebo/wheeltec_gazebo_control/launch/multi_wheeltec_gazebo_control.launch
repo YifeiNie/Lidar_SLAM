@@ -26,7 +26,7 @@
     <!--打开rviz-->
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(find wheeltec_gazebo_function)/rviz_config/multi_$(arg ugv_mode)_control.rviz"/>
 
-    <!--打开UGV-->
+    <!--init UGV-->
     <include file="$(find wheeltec_gazebo_control)/launch/single_wheeltec_gazebo.launch">
         <arg name="ugv_mode" value="$(arg ugv_mode)"/>
         <arg name="ugv_id" value="1"/>
@@ -58,5 +58,37 @@
         <arg name="init_y" value="0.0"/>
         <arg name="init_z" value="0.0"/>
     </include>
+
+    <!-- init UAV -->
+    <arg name="est" default="ekf2"/>
+    <arg name="vehicle" default="iris"/>
+    <arg name="my_model" default="iris_depth_camera"/>
+    <arg name="sdf" default="$(find mavlink_sitl_gazebo)/models/$(arg my_model)/$(arg my_model).sdf"/>
+    <group ns="uav_0">
+        <!-- MAVROS configs -->
+        <arg name="fcu_url" default="udp://:14540@localhost:14557"/>
+        <arg name="respawn_mavros" default="false"/>
+        <!-- PX4 configs -->
+        <arg name="interactive" default="true"/>
+        <!-- PX4 SITL and Gazebo -->
+        <include file="$(find wheeltec_gazebo_control)/launch/uav_px4_gazebo.launch">
+            <arg name="x" value="0.5"/>
+            <arg name="y" value="-0.5"/>
+            <arg name="z" value="0.0"/>
+            <arg name="R" value="0.0"/>
+            <arg name="P" value="0.0"/>
+            <arg name="Y" value="0.0"/>
+            <arg name="vehicle" value="$(arg vehicle)"/>
+            <arg name="sdf" value="$(arg sdf)"/>
+            <arg name="interactive" value="$(arg interactive)"/>
+        </include>
+        <!-- MAVROS -->
+        <include file="$(find mavros)/launch/px4.launch">
+            <!-- GCS link is provided by SITL -->
+            <arg name="gcs_url" value=""/>
+            <arg name="fcu_url" value="$(arg fcu_url)"/>
+            <arg name="respawn_mavros" value="$(arg respawn_mavros)"/>
+        </include>
+    </group>
 
 </launch>
