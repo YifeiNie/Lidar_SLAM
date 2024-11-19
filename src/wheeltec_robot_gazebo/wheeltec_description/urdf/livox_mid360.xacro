@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<robot name="wheeltec"
+    xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:macro name="laser_livox" params="LA">
+        <link name="laser_link">
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <!-- <box size="0.05 0.05 0.05"/> -->
+                    <mesh filename="package://wheeltec_description/meshes/livox_mid360/livox_mid-360-90x.dae" />
+                </geometry>
+                <material name="black"/>
+            </visual>
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <!-- <box size="0.05 0.05 0.05"/> -->
+                    <mesh filename="package://wheeltec_description/meshes/livox_mid360/livox_mid-360-90x.dae" />
+                </geometry>
+            </collision>
+        </link>
+        <!-- Gazebo 配置 -->
+        <gazebo reference="laser_link">
+            <material>Gazebo/Gray</material>
+            <!--define sensor-->
+            <sensor type="ray" name="laser_livox">
+                <visualize>True</visualize>
+                <always_on>True</always_on>
+                <update_rate>20</update_rate>
+                <plugin name="gazebo_ros_laser_controller" filename="liblivox_laser_simulation.so">
+                    <ray>
+                        <scan>
+                            <horizontal>
+                                <samples>100</samples>
+                                <resolution>1</resolution>
+                                <min_angle>-3.1415926535897931</min_angle>
+                                <max_angle>3.1415926535897931</max_angle>
+                            </horizontal>
+                            <vertical>
+                                <samples>50</samples>
+                                <resolution>1</resolution>
+                                <min_angle>-3.1415926535897931</min_angle>
+                                <max_angle>3.1415926535897931</max_angle>
+                            </vertical>
+                        </scan>
+                        <range>
+                            <min>0.1</min>
+                            <max>40</max>
+                            <resolution>1</resolution>
+                        </range>
+                        <noise>
+                            <type>gaussian</type>
+                            <mean>0.0</mean>
+                            <stddev>0.0</stddev>
+                        </noise>
+                    </ray>
+                    <visualize>True</visualize>
+                    <samples>20000</samples>
+                    <downsample>1</downsample>
+                    <csv_file_name>mid360-real-centr.csv</csv_file_name>
+                    <publish_pointcloud_type>2</publish_pointcloud_type>
+                    <ros_topic>ugv_1/lidar</ros_topic>
+                    <frameName>ugv_1/laser_link</frameName>
+                </plugin>
+            </sensor>
+        </gazebo>
+    </xacro:macro>
+</robot>

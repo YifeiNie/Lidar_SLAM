@@ -7,7 +7,8 @@
     <!--rplidar position-->
     <xacro:property name="rplidar_offset_x" value="0.048632" />
     <xacro:property name="rplidar_offset_y" value="0.00018237" />
-    <xacro:property name="rplidar_offset_z" value="0.1296" />
+    <!-- <xacro:property name="rplidar_offset_z" value="0.1296" /> -->
+    <xacro:property name="rplidar_offset_z" value="0.0796" />
     <!--rplidar scanning angle-->
     <xacro:property name="rplidar_min_angle" value="-180" />
     <xacro:property name="rplidar_max_angle" value="180" />
@@ -39,14 +40,17 @@
     <xacro:include filename="$(find wheeltec_description)/urdf/mini_mec/minimec_body.xacro" />
     <!-- <xacro:include filename="$(find wheeltec_description)/urdf/mini_mec/minimec_rplidar.xacro" /> -->
     <!-- <xacro:include filename="$(find wheeltec_description)/urdf/mini_mec/minimec_camera.xacro" /> -->
+    <xacro:include filename="$(find wheeltec_description)/urdf/livox_mid360.xacro" />
     <xacro:include filename="$(find wheeltec_description)/urdf/imu.xacro" />
     <xacro:include filename="$(find wheeltec_description)/urdf/material.xacro" />
     <xacro:include filename="$(find wheeltec_description)/urdf/mini_mec/my_minimec_transmission.xacro" />
-    <!-- <joint name="rplidar_joint" type="fixed">
-        <origin xyz="${rplidar_offset_x} ${rplidar_offset_y} ${rplidar_offset_z}" rpy="0 0 0" />
+    <xacro:laser_livox LA="laser"/>
+    <!-- <xacro:Livox_Mid360 name="laser_link"/> -->
+    <joint name="laser_joint" type="fixed">
+        <origin xyz="${rplidar_offset_x} ${rplidar_offset_y} ${rplidar_offset_z}" rpy="0 0 ${M_PI}" />
         <parent link="base_link"/>
         <child link="laser_link"/>
-    </joint> -->
+    </joint>
     <!-- Attach the camera -->
     <!-- <joint name="camera_frame_joint" type="fixed">
         <origin xyz="${camera_offset_x} ${camera_offset_y} ${camera_offset_z}" rpy="0 0 0" />

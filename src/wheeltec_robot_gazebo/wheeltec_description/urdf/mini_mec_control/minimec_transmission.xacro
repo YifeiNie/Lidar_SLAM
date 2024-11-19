@@ -41,9 +41,9 @@
       <!--Max angular velocity,unit rad/s-->
       <max_turn>3</max_turn>
       <!--ROS: Subscribe to the velocity command topic (usually "cmd_vel")-->
-      <commandTopic>/cmd_vel</commandTopic>
+      <commandTopic>cmd_vel</commandTopic>
       <!--ROS: Publish to the odometry topic (usually "odom")-->
-      <odometryTopic>/odom</odometryTopic>
+      <odometryTopic>odom</odometryTopic>
       <!--tf connect odometryFrame to robotBaseFrame-->
       <odometryFrame>odom</odometryFrame>
       <robotBaseFrame>base_footprint</robotBaseFrame>
