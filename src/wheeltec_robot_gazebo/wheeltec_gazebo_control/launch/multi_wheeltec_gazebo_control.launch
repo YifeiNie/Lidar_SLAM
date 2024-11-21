@@ -2,7 +2,7 @@
     <!--选择车型-->
     <arg name="ugv_mode" value="mini_mec" doc="opt: mini_mec,mini_mec_control"/>
     <!-- world信息 -->
-    <arg name="world_name" value="$(find wheeltec_description)/worlds/my_world.world"/>
+    <!-- <arg name="world_name" value="$(find wheeltec_description)/worlds/my_world.world"/> -->
     <arg name="paused" default="false"/>
     <!--以暂停状态打开Gazebo 默认为false-->
     <arg name="use_sim_time" default="true"/>
@@ -16,7 +16,7 @@
 
     <!-- 打开gazebo仿真-->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
-        <arg name="world_name" value="$(arg world_name)" />
+        <!-- <arg name="world_name" value="$(arg world_name)" /> -->
         <arg name="debug" value="$(arg debug)" />
         <arg name="gui" value="$(arg gui)" />
         <arg name="paused" value="$(arg paused)"/>
@@ -35,7 +35,7 @@
         <arg name="init_z" value="0.0"/>
     </include>
 
-    <include file="$(find wheeltec_gazebo_control)/launch/single_wheeltec_gazebo.launch">
+    <!-- <include file="$(find wheeltec_gazebo_control)/launch/single_wheeltec_gazebo.launch">
         <arg name="ugv_mode" value="$(arg ugv_mode)"/>
         <arg name="ugv_id" value="2"/>
         <arg name="init_x" value="0.0"/>
@@ -57,20 +57,17 @@
         <arg name="init_x" value="1.0"/>
         <arg name="init_y" value="0.0"/>
         <arg name="init_z" value="0.0"/>
-    </include>
+    </include> -->
 
     <!-- init UAV -->
-    <arg name="est" default="ekf2"/>
+    <!-- <arg name="est" default="ekf2"/>
     <arg name="vehicle" default="iris"/>
     <arg name="my_model" default="iris_depth_camera"/>
     <arg name="sdf" default="$(find mavlink_sitl_gazebo)/models/$(arg my_model)/$(arg my_model).sdf"/>
     <group ns="uav_0">
-        <!-- MAVROS configs -->
         <arg name="fcu_url" default="udp://:14540@localhost:14557"/>
         <arg name="respawn_mavros" default="false"/>
-        <!-- PX4 configs -->
         <arg name="interactive" default="true"/>
-        <!-- PX4 SITL and Gazebo -->
         <include file="$(find wheeltec_gazebo_control)/launch/uav_px4_gazebo.launch">
             <arg name="x" value="0.5"/>
             <arg name="y" value="-0.5"/>
@@ -82,13 +79,11 @@
             <arg name="sdf" value="$(arg sdf)"/>
             <arg name="interactive" value="$(arg interactive)"/>
         </include>
-        <!-- MAVROS -->
         <include file="$(find mavros)/launch/px4.launch">
-            <!-- GCS link is provided by SITL -->
             <arg name="gcs_url" value=""/>
             <arg name="fcu_url" value="$(arg fcu_url)"/>
             <arg name="respawn_mavros" value="$(arg respawn_mavros)"/>
         </include>
-    </group>
+    </group> -->
 
 </launch>

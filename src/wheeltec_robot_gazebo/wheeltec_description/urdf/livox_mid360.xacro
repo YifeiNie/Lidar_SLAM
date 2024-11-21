@@ -7,7 +7,7 @@
     <xacro:property name="noise_mean" value="0.01"/>
     <xacro:property name="noise_stddev" value="0.00"/>
     <xacro:property name="laser_min_range" value="0.1"/>
-    <xacro:property name="laser_max_range" value="200"/>
+    <xacro:property name="laser_max_range" value="40"/>
     <xacro:property name="samples" value="20000"/>
     <xacro:property name="downsample" value="1"/>
 
@@ -25,6 +25,7 @@
                 </geometry>
             </visual>
             <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>
                     <box>
                         <size>0.05 0.05 0.05</size>
@@ -37,7 +38,7 @@
             <material>Gazebo/Gray</material>
             <!--define sensor-->
             <sensor type="ray" name="laser_livox">
-                <visualize>false</visualize>
+                <visualize>true</visualize>
                 <always_on>True</always_on>
                 <update_rate>${update_rate}</update_rate>
                 <plugin name="gazebo_ros_laser_controller" filename="liblivox_laser_simulation.so">
@@ -52,8 +53,8 @@
                             <vertical>
                                 <samples>100</samples>
                                 <resolution>1</resolution>
-                                <min_angle>${-7.22/180*M_PI}</min_angle>
-                                <max_angle>${55.22/180*M_PI}</max_angle>
+                                <min_angle>${-M_PI}</min_angle>
+                                <max_angle>${M_PI}</max_angle>
                             </vertical>
                         </scan>
                         <range>
