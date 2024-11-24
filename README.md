@@ -32,9 +32,14 @@
     - 在文件夹`generate_bev_pointfeat_cython`下的test.py文件前添加`import voxelocc`
     - 运行两个test，如果运行第二个test报错segmentation相关错误并显示`core dumped`，并且按照教材修改了栈大小还是不行后，说明numpy的版本太新了，退回为1.26.4，问题解决，此时两个test应该都能正常运行
 - 部署[MR_SLAM](https://github.com/MaverickPeter/MR_SLAM)
-    - 按照教程安装依赖，注意两个标记为optional的依赖也要安装
+    - 按照教程安装依赖，注意两个标记为optional的依赖也要安装，注意安装ros-noetic-octomap*后面的星号！！！！
     - 全局搜索文件`kindrConfig.cmake`，添加上这一句：`set(kindr_FOUND true)`
     - 安装grid-map包：`sudo apt-get install ros-noetic-grid-map`
     - 在教程的Installation部分，
-        - **Make Mapping**: 如果catkin_make的时候报错缺少FFTW3这个包，使用apt安装是不行的，因为apt安装这个包没有包含comfig.cmake文件，所以即使用apt安装了，catkin_make还是找不到，对此应该使用[源码](https://www.fftw.org/download.html)安装，参考[这里](https://blog.csdn.net/weixin_39258979/article/details/109941424)，注意安装fftw-3.3.10.tar.gz这个版本，其他版本没有cmake文件无法通过经典的`cmake .`和`sudo make install`来安装FFTW3
-        - **Make Localization**
+        - **Make Mapping**: 先安装`sudo apt-get install libceres-dev`，然后如果catkin_make的时候报错缺少FFTW3这个包，使用apt安装是不行的，因为apt安装这个包没有包含comfig.cmake文件，所以即使用apt安装了，catkin_make还是找不到，对此应该使用[源码](https://www.fftw.org/download.html)安装，参考[这里](https://blog.csdn.net/weixin_39258979/article/details/109941424)，注意安装fftw-3.3.10.tar.gz这个版本，其他版本没有cmake文件无法通过经典的`cmake .`和`sudo make install`来安装FFTW3
+        - **Make Localization**：安装[livox_sdk](https://github.com/Livox-SDK/Livox-SDK)和[livox_ros_driver](https://github.com/Livox-SDK/livox_ros_driver)，注意不要安装driver2和sdk2，否则catkin_make的时候会报找不到livox_def.h和livox_sdk.h，然后记得安装后source一下才catkin_make
+        - **Make Costmap**：将/Costmap/src/costmap路径下的CMakeLists.txt中的全部`-std=c++11`改为`-std=c++14`再进行编译即可
+        - **Make LoopDetection**：直接按照教程安装即可
+
+
+
