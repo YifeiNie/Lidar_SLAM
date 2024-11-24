@@ -23,3 +23,18 @@
     - 重新执行pytorch的安装，然后使用`pip cache purge`删除缓存
     - 以上参考了[这里](https://blog.csdn.net/DEVELOPERAA/article/details/133743389)和[这里](https://blog.csdn.net/chdlr/article/details/136989643)
 - 运行python程序时报错`/usr/bin/env: ‘python’: No such file or directory报错`，使用`sudo ln -s /usr/bin/python3 /usr/bin/python`创建符号连接就能解决
+
+### 2024.11.24 -- by nyf 
+- 部署[RING/RING++算法](https://github.com/lus6-Jenny/RING)
+    - 创建conda环境，使用python3.10版本，因为有一个依赖(PyFrameObject)10以后就不支持了，然后按照教程执行
+    - 依照教程进行两个test.py之前，首先安装[KNN_cuda](https://github.com/unlimblue/KNN_CUDA)，如果报错`"ERROR: Could not install packages due to an OSError: HTTPSConnectionPool"`，参考[这里](https://gist.github.com/Kalffman/d873d84099784db808dce6c1bea65799)在`--upgrade`前加上`--trusted-host=pypi.python.org --trusted-host=pypi.org --trusted-host=files.pythonhosted.org `
+    - 安装ninja: `pip install ninja`
+    - 在文件夹`generate_bev_pointfeat_cython`下的test.py文件前添加`import voxelocc`
+    - 运行两个test，如果运行第二个test报错segmentation相关错误并显示`core dumped`，并且按照教材修改了栈大小还是不行后，说明numpy的版本太新了，退回为1.26.4，问题解决，此时两个test应该都能正常运行
+- 部署[MR_SLAM](https://github.com/MaverickPeter/MR_SLAM)
+    - 按照教程安装依赖，注意两个标记为optional的依赖也要安装
+    - 全局搜索文件`kindrConfig.cmake`，添加上这一句：`set(kindr_FOUND true)`
+    - 安装grid-map包：`sudo apt-get install ros-noetic-grid-map`
+    - 在教程的Installation部分，
+        - **Make Mapping**: 如果catkin_make的时候报错缺少FFTW3这个包，使用apt安装是不行的，因为apt安装这个包没有包含comfig.cmake文件，所以即使用apt安装了，catkin_make还是找不到，对此应该使用[源码](https://www.fftw.org/download.html)安装，参考[这里](https://blog.csdn.net/weixin_39258979/article/details/109941424)，注意安装fftw-3.3.10.tar.gz这个版本，其他版本没有cmake文件无法通过经典的`cmake .`和`sudo make install`来安装FFTW3
+        - **Make Localization**
