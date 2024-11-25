@@ -30,7 +30,7 @@
     - 依照教程进行两个test.py之前，首先安装[KNN_cuda](https://github.com/unlimblue/KNN_CUDA)，如果报错`"ERROR: Could not install packages due to an OSError: HTTPSConnectionPool"`，参考[这里](https://gist.github.com/Kalffman/d873d84099784db808dce6c1bea65799)在`--upgrade`前加上`--trusted-host=pypi.python.org --trusted-host=pypi.org --trusted-host=files.pythonhosted.org `
     - 安装ninja: `pip install ninja`
     - 在文件夹`generate_bev_pointfeat_cython`下的test.py文件前添加`import voxelocc`
-    - 运行两个test，如果运行第二个test报错segmentation相关错误并显示`core dumped`，并且按照教材修改了栈大小还是不行后，说明numpy的版本太新了，退回为1.26.4，问题解决，此时两个test应该都能正常运行
+    - 运行两个test，如果运行第二个test报错segmentation相关错误并显示`core dumped`，并且按照教材修改了栈大小还是不行后，说明numpy的版本太新了，退回为1.26.4，问题解决，此时两个test应该都能正常运行，参考[这里](https://stackoverflow.com/questions/78778444/segmentation-fault-when-pass-a-numpy-array-to-open3d-utility-vector3dvector)
 - 部署[MR_SLAM](https://github.com/MaverickPeter/MR_SLAM)
     - 按照教程安装依赖，注意两个标记为optional的依赖也要安装，注意安装ros-noetic-octomap*后面的星号！！！！
     - 全局搜索文件`kindrConfig.cmake`，添加上这一句：`set(kindr_FOUND true)`
@@ -40,6 +40,11 @@
         - **Make Localization**：安装[livox_sdk](https://github.com/Livox-SDK/Livox-SDK)和[livox_ros_driver](https://github.com/Livox-SDK/livox_ros_driver)，注意不要安装driver2和sdk2，否则catkin_make的时候会报找不到livox_def.h和livox_sdk.h，然后记得安装后source一下才catkin_make
         - **Make Costmap**：将/Costmap/src/costmap路径下的CMakeLists.txt中的全部`-std=c++11`改为`-std=c++14`再进行编译即可
         - **Make LoopDetection**：直接按照教程安装即可
+
+### 2024.11.25 -- by nyf 正式运行
+- 测试DISCO算法时，需要安装tensorboard和tensorboardX，进入虚拟环境后使用pip安装即可
+- 运行DISCO时，进入disco_ros文件夹，使用python main.py运行，而不要按照教程中的使用rosrun来运行，除非你执行了教程中说的"add #!/xxx/python3 in the first line of RING_ros/main.py"
+- 进入rviz可视化时，点击左下角add，添加pointcloud2，注意要选择话题"/global_manager/merged_cloud"，并调整点的大小形状即可
 
 
 
