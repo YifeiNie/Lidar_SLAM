@@ -8,7 +8,7 @@
     - `sudo apt-get install nvidia-driver-525`，此处数字要对应上面查询到的recommended版本号
     - 重启
 - 使用`nvidia-smi`检查cuda版本，根据版本进入[pytorch官网](https://pytorch.org/)选择对应版本下载，如果出现问题，参考下面执行操作
-- ROS会创建一个系统级别的python环境，不要更改，直接下载(miniconda3[https://repo.anaconda.com/miniconda/])进行虚拟环境管理，防止同名不同版本的包互相干扰导致各种报错
+- ROS会创建一个系统级别的python环境，不要更改，直接下载[miniconda3](https://repo.anaconda.com/miniconda/)进行虚拟环境管理，防止同名不同版本的包互相干扰导致各种报错
     - 更新py:如果报错`ERROR: Package 'networkx' requires a different Python: 3.8.10 not in '>=3.9'`，说明python版本过低，需要更新python
         - 注意！！！从这里开始，务必保持一个空的终端在后台开启，因为终端是基于python的，更新版本后终端将打不开，而处理这种情况又需要打开终端，所以建议保留，如果实在忘记，也可以通过vscode的终端操作，前提是vscode已经解锁了sudo命令
         - 使用如下命令更新：
