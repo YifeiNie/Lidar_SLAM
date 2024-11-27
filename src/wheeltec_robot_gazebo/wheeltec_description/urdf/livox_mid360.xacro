@@ -72,7 +72,7 @@
                     <samples>${samples}</samples>
                     <downsample>${downsample}</downsample>
                     <csv_file_name>package://wheeltec_description/meshes/livox_mid360/mid360.csv</csv_file_name>
-                    <publish_pointcloud_type>2</publish_pointcloud_type>
+                    <publish_pointcloud_type>3</publish_pointcloud_type>
                     <ros_topic>${NS}/lidar</ros_topic>
                     <frameName>${NS}/laser_link</frameName>
                 </plugin>

@@ -50,13 +50,12 @@ void KeyboardCtr::printKeyStatus() {
 
 // 节点类的构造函数
 KeyboardCtr::KeyboardCtr(int queue_size, double publish_rate){
-    // 初始化发布者
+
     ugv_name = {};
     publisher = advertise<geometry_msgs::Twist>("/cmd_vel", queue_size);
-    setTwist(0.0, 0.0, 0.0, 0.0, 0.0, 0.0); // 设置线速度和角速度
+    setTwist(0.0, 0.0, 0.0, 0.0, 0.0, 0.0); 
     ROS_INFO("CmdVelPublisher initialized for topic: cmd_vel");
 
-    // 初始化定时器，指定发布频率
     timer = createTimer(ros::Duration(1.0 / publish_rate), &KeyboardCtr::timer_callback, this);
     std::fill(latch_key_status, latch_key_status + LATCH_KEYS_NUM, false);
     std::fill(trigger_key_status, trigger_key_status + TRIGGER_KEYS_NUM, false);
@@ -69,7 +68,7 @@ void KeyboardCtr::update_trigger_key_status(uint8_t key_index){
     } else if (ev.value == 0) {  // 松开
         trigger_key_status[key_index]= false;
     } else if (ev.value == 2) {  // 按住
-        // 持续按住时不需要改变状态
+        // 持续按住不改变状态
     }
     // printKeyStatus();
 }
