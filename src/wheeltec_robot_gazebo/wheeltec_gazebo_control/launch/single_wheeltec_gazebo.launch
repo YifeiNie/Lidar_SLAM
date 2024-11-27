@@ -20,7 +20,7 @@
         <!-- 发布odom话题和tf -->
         <node pkg="wheeltec_gazebo_function" type="my_gazebo_odometry.py" name="gazebo_odometry_node_$(arg ugv_mode)" output="screen"/>
         <!--订阅话题推出机器人运动状态-->
-        <!-- <node pkg="wheeltec_gazebo_function" type="my_real_cmd_vel_$(arg ugv_mode).py" name="pub_$(arg ugv_mode)_$(arg ugv_id)_cmd" output="screen"/> -->
+        // <!-- <node pkg="wheeltec_gazebo_function" type="my_real_cmd_vel_$(arg ugv_mode).py" name="pub_$(arg ugv_mode)_$(arg ugv_id)_cmd" output="screen"/> -->
 
         <!-- 调用xacro文件解析器 将对应车型的xacro文件转为urdf文件 -->
         <!-- <arg name="model" default="$(find xacro)/xacro '$(find wheeltec_description)/urdf/$(arg ugv_mode)/my_$(arg ugv_mode).xacro'"/>

@@ -84,7 +84,7 @@ void KeyboardCtr::update_latch_key_status(uint8_t key_index){
         }
         get_namespace(key_index);
     }
-    // printKeyStatus();
+    printKeyStatus();
     
 }
 
@@ -101,7 +101,7 @@ void KeyboardCtr::get_namespace (uint8_t num){
 void KeyboardCtr::publish_vel_cmd(){
     // std::cout << ugv_name <<std::endl;
     publisher = advertise<geometry_msgs::Twist>(ugv_name, 10);
-    setTwist(50,50,50,50,50,50);
+    setTwist(5,5,5,5,5,5);
     publisher.publish(twist_msg);
 }
 
@@ -152,7 +152,7 @@ void KeyboardCtr::timer_callback(const ros::TimerEvent& event){
         }      
     }
     publish_vel_cmd();
-    printKeyStatus();
+    // printKeyStatus();
 }
 
 int KeyboardCtr::dir_judge(uint8_t dir1, uint8_t dir2){
