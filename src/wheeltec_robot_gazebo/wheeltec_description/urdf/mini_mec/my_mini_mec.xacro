@@ -26,8 +26,8 @@
     <xacro:property name="right_rear_wheel_position_y" value="-0.080432385013156" />
     <xacro:property name="wheel_position_z" value="-0.036" />
     <xacro:property name="rear_wheel_position_x" value="-0.087868" />
-    <xacro:property name="wheel_mass" value="0.026412" />
-    <xacro:property name="shaft_mass" value="0.00016066" />
+    <xacro:property name="wheel_mass" value="1.622412" />
+    <xacro:property name="shaft_mass" value="0.0016066" />
     <xacro:property name="roll_mass" value="0.0023973" />
     <xacro:property name="box_position_x" value="0" />
     <xacro:property name="box_position_y" value="0" />
@@ -35,7 +35,7 @@
     <xacro:property name="box_length" value="0.24" />
     <xacro:property name="box_height" value="0.07" />
     <xacro:property name="box_width" value="0.12" />
-    <xacro:property name="box_mass" value="0.082" />
+    <xacro:property name="box_mass" value="1.982" />
     <!--robot with rplidar and camera -->
     <xacro:include filename="$(find wheeltec_description)/urdf/mini_mec/minimec_body.xacro" />
     <!-- <xacro:include filename="$(find wheeltec_description)/urdf/mini_mec/minimec_rplidar.xacro" /> -->
@@ -62,9 +62,11 @@
             <parent link="base_link"/>
             <child link="${LR}_${FR}_wheel_link"/>
             <axis xyz="0 1 0" rpy="0 0 0"/>
-            <limit effort="3.9" velocity="36.92"/>
+            <limit effort="15" velocity="56.92"/>
         </joint>
     </xacro:macro>
+    
+    
     <xacro:macro name="shaft_roll_joint" params="LR FR ROLL SHAFT *origin1 *origin2 *axis">
         <joint name="${LR}_${FR}_${SHAFT}_joint" type="fixed">
             <xacro:insert_block name="origin1"/>
@@ -128,31 +130,39 @@
     <xacro:wheel_joint LR="right" FR="front">
         <origin xyz="${front_wheel_position_x} ${right_front_wheel_position_y} ${wheel_position_z} " rpy="0 0 0"/>
     </xacro:wheel_joint>
+
     <xacro:wheel_joint LR="left" FR="front">
         <origin xyz="${front_wheel_position_x} ${left_front_wheel_position_y} ${wheel_position_z} " rpy="0 0 0"/>
     </xacro:wheel_joint>
+    
     <xacro:wheel_joint LR="right" FR="rear">
         <origin xyz="${rear_wheel_position_x} ${right_rear_wheel_position_y} ${wheel_position_z} " rpy="0 0 0"/>
     </xacro:wheel_joint>
+    
     <xacro:wheel_joint LR="left" FR="rear">
         <origin xyz="${rear_wheel_position_x} ${left_rear_wheel_position_y} ${wheel_position_z} " rpy="0 0 0"/>
     </xacro:wheel_joint>
+    
     <xacro:wheel_link LR="right" FR="front">
         <origin xyz="5.48970274971694E-06 -0.0127495288632179 -9.41395330111144E-06" rpy="0 0 0" />
         <inertia ixx="4.59972260796131E-06" ixy="-6.47318183121867E-10" ixz="-6.40362334617672E-10" iyy="6.75163076593965E-06" iyz="1.13228810166169E-09" izz="4.60060476443752E-06" />
     </xacro:wheel_link>
+    
     <xacro:wheel_link LR="left" FR="front">
         <origin xyz="-5.7757E-06 0.012818 9.8107E-06" rpy="0 0 0" />
         <inertia ixx="4.4591E-06" ixy="-6.3949E-10" ixz="-6.551E-10" iyy="6.7496E-06" iyz="1.1447E-09" izz="4.46E-06" />
     </xacro:wheel_link>
+    
     <xacro:wheel_link LR="right" FR="rear">
         <origin xyz="5.7679E-06 -0.012818 9.7978E-06" rpy="0 0 0" />
         <inertia ixx="4.4591E-06" ixy="-6.385E-10" ixz="6.5391E-10" iyy="6.7496E-06" iyz="-1.1453E-09" izz="4.46E-06" />
     </xacro:wheel_link>
+    
     <xacro:wheel_link LR="left" FR="rear">
         <origin xyz="-5.49105510379289E-06 0.0112495301175029 -9.41376970186453E-06" rpy="0 0 0" />
         <inertia ixx="4.59972328083854E-06" ixy="-6.47459444831917E-10" ixz="6.40217125744382E-10" iyy="6.75163115978229E-06" iyz="-1.13218887733361E-09" izz="4.60060413465442E-06" />
     </xacro:wheel_link>
+    
     <xacro:transmission_choose LR="right" FR="front" />
     <xacro:transmission_choose LR="left" FR="front" />
     <xacro:transmission_choose LR="right" FR="rear" />

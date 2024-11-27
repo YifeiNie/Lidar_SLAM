@@ -30,6 +30,7 @@ public:
     void printKeyStatus();
     void get_namespace (uint8_t);
     void publish_vel_cmd();
+    int dir_judge(uint8_t dir1, uint8_t dir2);
 private:
     ros::Timer timer;                // 定时器对象
     ros::Publisher publisher;        // 发布者

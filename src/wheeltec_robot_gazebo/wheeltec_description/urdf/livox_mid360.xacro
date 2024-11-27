@@ -8,7 +8,7 @@
     <xacro:property name="noise_stddev" value="0.00"/>
     <xacro:property name="laser_min_range" value="0.1"/>
     <xacro:property name="laser_max_range" value="40"/>
-    <xacro:property name="samples" value="20000"/>
+    <xacro:property name="samples" value="6000"/>
     <xacro:property name="downsample" value="1"/>
 
     <xacro:macro name="laser_livox" params="NS">
@@ -45,13 +45,13 @@
                     <ray>
                         <scan>
                             <horizontal>
-                                <samples>100</samples>
+                                <samples>50</samples>
                                 <resolution>1</resolution>
                                 <min_angle>-${M_PI}</min_angle>
                                 <max_angle>${M_PI}</max_angle>
                             </horizontal>
                             <vertical>
-                                <samples>100</samples>
+                                <samples>50</samples>
                                 <resolution>1</resolution>
                                 <min_angle>${-M_PI}</min_angle>
                                 <max_angle>${M_PI}</max_angle>

@@ -1,15 +1,40 @@
 <launch>
     <!--选择车型-->
-    <arg name="ugv_mode"/>
-    <arg name="ugv_id"/>
-    <arg name="init_x"/>
-    <arg name="init_y"/>
-    <arg name="init_z"/>
+    <arg name="ugv_mode" value="mini_mec"/>
+    <arg name="ugv_id" value="1"/>
+    <arg name="init_x" value="0.0"/>
+    <arg name="init_y" value="0.0"/>
+    <arg name="init_z" value="0.0"/>
     <arg name="roll" value="0.0"/>
     <arg name="pitch" value="0.0"/>
     <arg name="yaw" value="0.0"/>
 
     <arg name="ns" value="ugv_$(arg ugv_id)"/>
+    <!-- world信息 -->
+    <!-- <arg name="world_name" value="$(find wheeltec_description)/worlds/my_world.world"/> -->
+    <arg name="paused" default="false"/>
+    <!--以暂停状态打开Gazebo 默认为false-->
+    <arg name="use_sim_time" default="true"/>
+    <!--节点启动模拟时间，启动主题topic /clock 默认为true-->
+    <arg name="gui" default="true"/>
+    <!--启动Gazebo用户界面接口 默认为true-->
+    <arg name="headless" default="false"/>
+    <!--Gazebo已弃用，不起任何作用，定义仍保留以防止打破其他launch启动-->
+    <arg name="debug" default="false"/>
+    <!--用gdb模式启动gzserver（Gazebo 服务器） 默认为false-->
+
+    <!-- 打开gazebo仿真-->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <!-- <arg name="world_name" value="$(arg world_name)" /> -->
+        <arg name="debug" value="$(arg debug)" />
+        <arg name="gui" value="$(arg gui)" />
+        <arg name="paused" value="$(arg paused)"/>
+        <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+        <arg name="headless" value="$(arg headless)"/>
+    </include>
+    <!--打开rviz-->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find wheeltec_gazebo_function)/rviz_config/multi_$(arg ugv_mode)_control.rviz"/>
+
 
     <group ns="ugv_$(arg ugv_id)">
         <!--load controller yaml-->

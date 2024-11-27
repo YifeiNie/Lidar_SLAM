@@ -45,6 +45,8 @@
 - 测试DISCO算法时，需要安装tensorboard和tensorboardX，进入虚拟环境后使用pip安装即可
 - 运行DISCO时，进入disco_ros文件夹，使用python main.py运行，而不要按照教程中的使用rosrun来运行，除非你执行了教程中说的"add #!/xxx/python3 in the first line of RING_ros/main.py"
 - 进入rviz可视化时，点击左下角add，添加pointcloud2，注意要选择话题"/global_manager/merged_cloud"，并调整点的大小形状即可
+### 2024.11.28 -- by nyf
+- gezabo时间计算根运算负载有关，证据是单车仿真，默认情况下仿真时间/真实时间的值要大于多车方针，也即真实时间过去一秒，仿真环境过去的时间
 
 
 

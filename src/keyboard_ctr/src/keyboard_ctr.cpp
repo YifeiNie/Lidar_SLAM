@@ -71,7 +71,7 @@ void KeyboardCtr::update_trigger_key_status(uint8_t key_index){
     } else if (ev.value == 2) {  // 按住
         // 持续按住时不需要改变状态
     }
-    printKeyStatus();
+    // printKeyStatus();
 }
 void KeyboardCtr::update_latch_key_status(uint8_t key_index){
     if (ev.value == 1){
@@ -85,7 +85,7 @@ void KeyboardCtr::update_latch_key_status(uint8_t key_index){
         }
         get_namespace(key_index);
     }
-    printKeyStatus();
+    // printKeyStatus();
     
 }
 
@@ -153,30 +153,32 @@ void KeyboardCtr::timer_callback(const ros::TimerEvent& event){
         }      
     }
     publish_vel_cmd();
+    printKeyStatus();
+}
 
+int KeyboardCtr::dir_judge(uint8_t dir1, uint8_t dir2){
+    if (trigger_key_status[dir1] == true && trigger_key_status[dir2] == false){
+        return 1;
+    }
+    else if (trigger_key_status[dir1] == false && trigger_key_status[dir2] == true){
+        return -1;
+    }
+    return 0;
 }
 
 void KeyboardCtr::setTwist(double linear_x, double linear_y, double linear_z, double angular_x, double angular_y, double angular_z) {
-    twist_msg.linear.x = linear_x*trigger_key_status[UP];
-    twist_msg.linear.y = linear_y*trigger_key_status[DOWN];
+    twist_msg.linear.x = linear_x*dir_judge(UP, DOWN);
+    twist_msg.linear.y = linear_y*dir_judge(A, D);
     twist_msg.linear.z = linear_z;
 
     twist_msg.angular.x = angular_x;
     twist_msg.angular.y = angular_y;
-    if (trigger_key_status[LEFT] == true && trigger_key_status[RIGHT] == false ){
-        twist_msg.angular.z = angular_z*(-1);
-    }
-    else if (trigger_key_status[LEFT] == false && trigger_key_status[RIGHT] == true){
-        twist_msg.angular.z = angular_z;
-    }
-    else {
-         twist_msg.angular.z = 0;
-    }
+    twist_msg.angular.z = angular_z*dir_judge(LEFT, RIGHT);
 }
 
 int main(int argc, char** argv) {
     disableEcho();
-    const char* dev_path = "/dev/input/event29";  // 输入设备路径，根据实际情况修改
+    const char* dev_path = "/dev/input/event10";  // 输入设备路径，根据实际情况修改
     int fd = open(dev_path, O_RDONLY);
     if (fd == -1) {
         perror("Open device error");
@@ -192,7 +194,7 @@ int main(int argc, char** argv) {
     ros::init(argc, argv, "keyboard_cmd_vel_publisher");
 
     // 创建 CmdVelPublisher 类的实例
-    KeyboardCtr cmd_vel_pub = KeyboardCtr(10, 50.0); // 发布频率为 10 Hz
+    KeyboardCtr cmd_vel_pub = KeyboardCtr(10, 100.0); // 发布频率为 10 Hz
     // ROS 主循环
     ros::spin();
     enableEcho();
