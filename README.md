@@ -48,7 +48,7 @@
 ### 2024.11.28 -- by nyf
 - gazebo时间计算根运算负载有关，证据是单车仿真，默认情况下仿真时间/真实时间的值要大于多车方针，也即真实时间过去一秒，仿真环境过去的时间
 - fast-lio接受的livox雷达的点云消息不是传统的PointcCloud2类型，而是livox自定义的CustomMsg类型，因此需要在`~/Code/MR-SLAM/gazebo_sim/wheeltec_ugv_gazebo/src/wheeltec_robot_gazebo/wheeltec_description/urdf`路径下的livox_mid360.xacro文件中修改`<publish_pointcloud_type>3</publish_pointcloud_type>`的值为3，参考[这里](https://github.com/ChEnYuAnYiKe/wheeltec_ugv_gazebo/tree/master/src/wheeltec_robot_gazebo/Mid360_simulation_plugin)
-- rostopic中的/robot_1/submap话题中，submap数据是rosbag发出来的，如果实机运行，则直接诶输出的是keyframePC
+- rostopic中的/robot_1/submap话题中，submap数据是rosbag发出来的，如果实机运行，则直接输出的是keyframePC
 
 
 
