@@ -1,0 +1,9 @@
+README.md
+gputransform.pyx
+setup.py
+gputransform.egg-info/PKG-INFO
+gputransform.egg-info/SOURCES.txt
+gputransform.egg-info/dependency_links.txt
+gputransform.egg-info/not-zip-safe
+gputransform.egg-info/top_level.txt
+src/manager.cu

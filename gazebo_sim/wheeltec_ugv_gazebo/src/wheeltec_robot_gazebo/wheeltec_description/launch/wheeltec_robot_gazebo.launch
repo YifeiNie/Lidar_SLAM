@@ -1,0 +1,22 @@
+<launch>
+    <!--车型参数,由wheeltec_gazebo_control.launch定义导入-->
+    <arg name="car_mode"  default="" />
+    <!--机器人模型的起点放置位置xyz坐标-->
+    <arg name="x_pos" default="0.0"/>
+    <arg name="y_pos" default="0.0"/>
+    <arg name="z_pos" default="0.0"/>
+    <arg name="roll" default="0.0"/>
+    <arg name="pitch" default="0.0"/>
+    <arg name="yaw" default="0.0"/>
+    <!-- 调用xacro文件解析器 将对应车型的xacro文件转为urdf文件 -->
+    <arg name="model" default="$(find xacro)/xacro --inorder '$(find wheeltec_description)/urdf/$(arg car_mode)/$(arg car_mode).xacro'"/>
+    <param name="robot_description" command="$(arg model)" />
+     <!-- 运行robot_state_publisher节点，发布tf  -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"  output="screen" >
+        <remap from="/joint_states" to="/wheeltec/joint_states"/> <!--重映射-->
+        <param name="publish_frequency" type="double" value="50.0" /> <!--发布频率-->
+    </node>
+    <!-- 在gazebo中加载机器人模型 向gazebo_ros发出服务请求 添加urdf到gazebo中-->
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_urdf" 
+          args="-urdf -model wheeltec -param robot_description -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -R $(arg roll) -P $(arg pitch) -Y $(arg yaw)"/> 
+</launch>

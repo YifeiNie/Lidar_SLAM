@@ -1,0 +1,27 @@
+global_frame: map
+robot_base_frame: robot_1/odom
+
+transform_tolerance: 5.0
+meter_scoring: true
+
+footprint: [[-0.40, -0.40], [-0.40, 0.40], [0.40, 0.40], [0.40, -0.40]]
+footprint_padding: 0.0
+
+plugins:
+ - {name: points_layer, type: "costmap_2d::PointMapLayer"}
+ - {name: polygonal_layer, type: "polygon_layer::PolygonLayer"}
+ - {name: inflation_layer, type: "costmap_2d::InflationLayer"}
+
+
+points_layer:
+  enabled: true
+  source_topic: "/global_manager/merged_map"
+  opt_topic: "/global_manager/opt"
+  z_thresh: 0.1
+
+inflation_layer:
+ enabled: true
+ inflation_radius: 2.0
+ cost_scaling_factor: 2
+
+

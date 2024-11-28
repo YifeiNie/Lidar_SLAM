@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<robot name="wheeltec"
+    xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:property name="update_rate" value="30"/>
+    <xacro:property name="resolution" value="0.01"/>
+    <xacro:property name="noise_mean" value="0.01"/>
+    <xacro:property name="noise_stddev" value="0.00"/>
+    <xacro:property name="laser_min_range" value="0.1"/>
+    <xacro:property name="laser_max_range" value="40"/>
+    <xacro:property name="samples" value="6000"/>
+    <xacro:property name="downsample" value="1"/>
+
+    <xacro:macro name="laser_livox" params="NS">
+        <link name="laser_link">
+            <inertial>
+                <mass value="0.114"/>
+                <origin xyz="0 0 0"/>
+                <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+            </inertial>
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://wheeltec_description/meshes/livox_mid360/livox_mid360.stl" scale="1 1 1"/>
+                </geometry>
+            </visual>
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <box>
+                        <size>0.05 0.05 0.05</size>
+                    </box>
+                </geometry>
+            </collision>
+        </link>
+        <!-- Gazebo 配置 -->
+        <gazebo reference="laser_link">
+            <material>Gazebo/Gray</material>
+            <!--define sensor-->
+            <sensor type="ray" name="laser_livox">
+                <visualize>false</visualize>
+                <always_on>True</always_on>
+                <update_rate>${update_rate}</update_rate>
+                <plugin name="gazebo_ros_laser_controller" filename="liblivox_laser_simulation.so">
+                    <ray>
+                        <scan>
+                            <horizontal>
+                                <samples>50</samples>
+                                <resolution>1</resolution>
+                                <min_angle>-${M_PI}</min_angle>
+                                <max_angle>${M_PI}</max_angle>
+                            </horizontal>
+                            <vertical>
+                                <samples>50</samples>
+                                <resolution>1</resolution>
+                                <min_angle>${-M_PI}</min_angle>
+                                <max_angle>${M_PI}</max_angle>
+                            </vertical>
+                        </scan>
+                        <range>
+                            <min>${laser_min_range}</min>
+                            <max>${laser_max_range}</max>
+                            <resolution>${resolution}</resolution>
+                        </range>
+                        <noise>
+                            <type>gaussian</type>
+                            <mean>${noise_mean}</mean>
+                            <stddev>${resolution}</stddev>
+                        </noise>
+                    </ray>
+                    <visualize>True</visualize>
+                    <samples>${samples}</samples>
+                    <downsample>${downsample}</downsample>
+                    <csv_file_name>package://wheeltec_description/meshes/livox_mid360/mid360.csv</csv_file_name>
+                    <publish_pointcloud_type>3</publish_pointcloud_type>
+                    <ros_topic>${NS}/lidar</ros_topic>
+                    <frameName>${NS}/laser_link</frameName>
+                </plugin>
+            </sensor>
+        </gazebo>
+    </xacro:macro>
+</robot>

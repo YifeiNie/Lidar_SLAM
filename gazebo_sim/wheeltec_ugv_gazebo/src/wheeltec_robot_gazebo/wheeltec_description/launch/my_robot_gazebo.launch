@@ -1,0 +1,22 @@
+<launch>
+    <arg name="ugv_mode"/>
+    <arg name="ugv_id"/>
+    <arg name="init_x"/>
+    <arg name="init_y"/>
+    <arg name="init_z"/>
+    <arg name="roll" value="0.0"/>
+    <arg name="pitch" value="0.0"/>
+    <arg name="yaw" value="0.0"/>
+    <group ns="ugv_$(arg ugv_id)">
+        <!-- 调用xacro文件解析器 将对应车型的xacro文件转为urdf文件 -->
+        <arg name="model" default="$(find xacro)/xacro '$(find wheeltec_description)/urdf/$(arg ugv_mode)/$(arg ugv_mode).xacro'"/>
+        <param name="robot_description" command="$(arg model)" />
+        <!-- 运行robot_state_publisher节点，发布tf  -->
+        <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen">
+            <param name="publish_frequency" type="double" value="50.0" />
+        </node>
+        <!-- 在gazebo中加载机器人模型 向gazebo_ros发出服务请求 添加urdf到gazebo中-->
+        <node pkg="gazebo_ros" type="spawn_model" name="spawn_urdf" args="-urdf -model ugv_$(arg ugv_id) -param robot_description -x $(arg init_x) -y $(arg init_y) -z $(arg init_z) -R $(arg roll) -P $(arg pitch) -Y $(arg yaw)"/>
+    </group>
+
+</launch>

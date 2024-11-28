@@ -1,0 +1,38 @@
+<launch>
+    <!--选择车型-->
+    <arg name="car_mode" default="mini_mec"/>
+    <!-- world信息 -->
+    <!-- <arg name="world_name" value="$(find wheeltec_description)/worlds/wheeltec.world"/> -->
+    <arg name="paused" default="false"/> <!--以暂停状态打开Gazebo 默认为false-->
+    <arg name="use_sim_time" default="true"/> <!--节点启动模拟时间，启动主题topic /clock 默认为true-->
+    <arg name="gui" default="true"/> <!--启动Gazebo用户界面接口 默认为true-->
+    <arg name="headless" default="false"/><!--Gazebo已弃用，不起任何作用，定义仍保留以防止打破其他launch启动-->
+    <arg name="debug" default="false"/><!--用gdb模式启动gzserver（Gazebo 服务器） 默认为false-->
+    <!-- load the controllers -->
+    <node name="controller_manager" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="wheeltec" args="$(arg car_mode)_left_front_wheel_velocity_controller  $(arg car_mode)_right_front_wheel_velocity_controller  $(arg car_mode)_left_rear_wheel_velocity_controller  $(arg car_mode)_right_rear_wheel_velocity_controller  $(arg car_mode)_joint_state_controller"/>
+    <!--cmd_vel速度计算并赋值controller command-->
+    <node pkg="wheeltec_gazebo_function" type="Sub_cmd_vel_$(arg car_mode).py" name="sub_$(arg car_mode)_cmd" output="screen"/>
+    <!--订阅话题推出机器人运动状态-->
+    <node pkg="wheeltec_gazebo_function" type="real_cmd_vel_$(arg car_mode).py" name="pub_$(arg car_mode)_cmd" output="screen"/>
+    <!--load controller yaml-->
+    <rosparam file="$(find wheeltec_gazebo_control)/config/wheeltec_control_$(arg car_mode).yaml" command="load"/>
+    <!--发布odom话题和tf-->
+    <node pkg="wheeltec_gazebo_function" name="gazebo_odometry_node" type="gazebo_odometry.py" output="screen"/>
+    
+    <!-- 打开gazebo仿真-->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <!-- <arg name="world_name" value="$(arg world_name)" /> -->
+        <arg name="debug" value="$(arg debug)" />
+        <arg name="gui" value="$(arg gui)" />
+        <arg name="paused" value="$(arg paused)"/>
+        <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+        <arg name="headless" value="$(arg headless)"/>
+    </include>
+    <!--打开rviz-->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find wheeltec_gazebo_function)/rviz_config/$(arg car_mode).rviz"/>
+    <!--开启小车仿真节点-->
+    <include file="$(find wheeltec_description)/launch/wheeltec_robot_gazebo.launch">
+        <arg name="car_mode" value="$(arg car_mode)"/>
+    </include>
+    
+</launch>

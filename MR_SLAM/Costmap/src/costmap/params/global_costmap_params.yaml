@@ -1,0 +1,13 @@
+global_costmap:
+  global_frame: map
+  robot_base_frame: robot_1/odom
+  update_frequency: 5
+  publish_frequency: 5
+  width: 300.0
+  height: 300.0
+  origin_x: -150.0
+  origin_y: -150.0
+  resolution: 0.40
+  rolling_window: false
+  track_unknown_space: true
+  always_send_full_costmap: true
