@@ -49,6 +49,13 @@
 - gazebo时间计算根运算负载有关，证据是单车仿真，默认情况下仿真时间/真实时间的值要大于多车方针，也即真实时间过去一秒，仿真环境过去的时间
 - fast-lio接受的livox雷达的点云消息不是传统的PointcCloud2类型，而是livox自定义的CustomMsg类型，因此需要在`~/Code/MR-SLAM/gazebo_sim/wheeltec_ugv_gazebo/src/wheeltec_robot_gazebo/wheeltec_description/urdf`路径下的livox_mid360.xacro文件中修改`<publish_pointcloud_type>3</publish_pointcloud_type>`的值为3，参考[这里](https://github.com/ChEnYuAnYiKe/wheeltec_ugv_gazebo/tree/master/src/wheeltec_robot_gazebo/Mid360_simulation_plugin)
 - rostopic中的/robot_1/submap话题中，submap数据是rosbag发出来的，如果实机运行，则直接输出的是keyframePC
+- 使用RING++直接运行发现最终合并的地图出现漂移，其中一台机器人建的图和其他两个建的图没有重合，反而倾斜向上，对此修改global_manager.launch中的`icp_fitness_score`参数为0.15，增强回环检测，然后运行发现问题解决
+### 2024.11.30 -- by nyf
+- 进行四小车仿真的时候，注意要在rviz选择delay time，然后选择cloud_registered即可看到fastlio建的点云地图
+- 代码制定了好几个进程，进程函数都命名为`xxxxThread`，进程循环执行指导程序终止
+- 进程discoveryThread中的`void GlobalManager::discovery()`用于捕获当时所有的ROS话题，并进行处理
+- 进程MapComposingThread中的`void GlobalManager::discoveryThread()`函数`PointCloud GlobalManager::composeGlobalMap()`
 
-
+- 需要修改
+    - void GlobalManager::publishPoseGraph()
 

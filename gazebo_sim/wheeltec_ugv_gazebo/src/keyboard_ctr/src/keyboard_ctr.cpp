@@ -70,7 +70,7 @@ void KeyboardCtr::update_trigger_key_status(uint8_t key_index){
     } else if (ev.value == 2) {  // 按住
         // 持续按住不改变状态
     }
-    // printKeyStatus();
+    printKeyStatus();
 }
 void KeyboardCtr::update_latch_key_status(uint8_t key_index){
     if (ev.value == 1){

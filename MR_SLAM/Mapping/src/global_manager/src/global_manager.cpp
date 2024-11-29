@@ -2129,7 +2129,7 @@ PointCloud GlobalManager::composeGlobalMap()
  
   auto merge_start = system_clock::now();
 
-  // TODO: GEM merge
+  // TODO: GEM merge (not in current code)
   for (int i = 0; i < nrRobots; i++) {
     Eigen::Isometry3f T = Eigen::Isometry3f::Identity();
     T = currentRef[i];

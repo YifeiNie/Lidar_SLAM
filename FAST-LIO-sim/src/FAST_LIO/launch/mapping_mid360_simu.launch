@@ -12,7 +12,7 @@
         <node pkg="fast_lio" type="fastlio_mapping" name="laserMapping" output="screen" />
     </group>
 
-    <!-- <group ns="ugv_2">
+    <group ns="ugv_2">
         <rosparam command="load" file="$(find fast_lio)/config/mid360_simu.yaml" />
         <param name="feature_extract_enable" type="bool" value="0"/>
         <param name="point_filter_num" type="int" value="3"/>
@@ -46,6 +46,6 @@
         <param name="cube_side_length" type="double" value="1000" />
         <param name="runtime_pos_log_enable" type="bool" value="0" />
         <node pkg="fast_lio" type="fastlio_mapping" name="laserMapping" output="screen" />
-    </group> -->
+    </group>
 
 </launch>
