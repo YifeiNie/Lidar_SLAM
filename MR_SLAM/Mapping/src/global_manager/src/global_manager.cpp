@@ -2390,6 +2390,10 @@ void GlobalManager::publishPoseGraph()
       trajMarker_.color.r = 0.0f;
       trajMarker_.color.g = 0.0f;
       trajMarker_.color.b = 1.0f;
+    }else if(i == 3){
+      trajMarker_.color.r = 0.0f;
+      trajMarker_.color.g = 0.0f;
+      trajMarker_.color.b = 0.0f;
     }
     trajPoints.markers.push_back(trajMarker_);
   }

@@ -53,9 +53,8 @@
 ### 2024.11.30 -- by nyf
 - 进行四小车仿真的时候，注意要在rviz选择delay time，然后选择cloud_registered即可看到fastlio建的点云地图
 - 代码制定了好几个进程，进程函数都命名为`xxxxThread`，进程循环执行指导程序终止
-- 进程discoveryThread中的`void GlobalManager::discovery()`用于捕获当时所有的ROS话题，并进行处理
+- 进程discoveryThread中的`void GlobalManager::discovery()`用于捕获当时所有的ROS话题，并进行处理，具体操作是捕获ros当前全部话题，并筛选出map和disco的话题，并话题中获取机器人的名字，然后判断该名字是否以及出现过，如果否，机器人数量+1
 - 进程MapComposingThread中的`void GlobalManager::discoveryThread()`函数`PointCloud GlobalManager::composeGlobalMap()`
-
 - 需要修改
     - void GlobalManager::publishPoseGraph()
 
