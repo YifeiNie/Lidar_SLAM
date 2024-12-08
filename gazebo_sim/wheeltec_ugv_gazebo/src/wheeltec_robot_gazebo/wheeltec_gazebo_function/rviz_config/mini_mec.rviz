@@ -481,8 +481,8 @@ Visualization Manager:
           Show Trail: false
           Value: true
       Name: RobotModel
-      Robot Description: /ugv_1/robot_description
-      TF Prefix: /ugv_1
+      Robot Description: /robot_1/robot_description
+      TF Prefix: /robot_1
       Update Interval: 0
       Value: true
       Visual Enabled: true
@@ -525,7 +525,7 @@ Visualization Manager:
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: ugv_1/base_footprint
+    Fixed Frame: robot_1/base_footprint
     Frame Rate: 30
   Name: root
   Tools:

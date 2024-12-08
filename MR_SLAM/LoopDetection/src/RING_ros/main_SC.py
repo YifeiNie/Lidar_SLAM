@@ -306,7 +306,7 @@ def detect_loop_icp_RING(robotid_current, idx_current, pc_current, RING_current,
             pub.publish(Loop_msgs)      
             print("Loop detected between id ", Loop_msg.id0, " and id ", Loop_msg.id1)          
         else:
-            print("ICP fitness score is larger than threshold, reject the loop.")
+            print(f"ICP fitness score is {icp_fitness_score:.3f},  larger than threshold, reject the loop.")
 
 
 def callback1(data):

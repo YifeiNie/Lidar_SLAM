@@ -1,0 +1,14 @@
+<launch>
+  <!-- robot_1 -->
+  <include file="$(find fast_lio)/launch/sim/robot_1_sim.launch" />
+  
+  <!-- robot_2 -->
+  <include file="$(find fast_lio)/launch/sim/robot_2_sim.launch" />
+  
+  <!-- robot_3 -->
+  <include file="$(find fast_lio)/launch/sim/robot_3_sim.launch" />
+  
+  <!-- robot_4 -->
+  <include file="$(find fast_lio)/launch/sim/robot_4_sim.launch" />
+</launch>
+

@@ -6,7 +6,7 @@ Panels:
       Expanded:
         - /Global Options1
         - /TF1/Frames1
-        - /ugv_11
+        - /robot_11
       Splitter Ratio: 0.5702970027923584
     Tree Height: 1043
   - Class: rviz/Selection
@@ -44,9 +44,9 @@ Visualization Manager:
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
-      Name: ugv_2
-      Robot Description: ugv_2/robot_description
-      TF Prefix: ugv_2
+      Name: robot_2
+      Robot Description: robot_2/robot_description
+      TF Prefix: robot_2
       Update Interval: 0
       Value: true
       Visual Enabled: true
@@ -60,9 +60,9 @@ Visualization Manager:
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: ""
-      Name: ugv_3
-      Robot Description: ugv_3/robot_description
-      TF Prefix: ugv_3
+      Name: robot_3
+      Robot Description: robot_3/robot_description
+      TF Prefix: robot_3
       Update Interval: 0
       Value: true
       Visual Enabled: true
@@ -76,9 +76,9 @@ Visualization Manager:
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: ""
-      Name: ugv_4
-      Robot Description: ugv_4/robot_description
-      TF Prefix: ugv_4
+      Name: robot_4
+      Robot Description: robot_4/robot_description
+      TF Prefix: robot_4
       Update Interval: 0
       Value: true
       Visual Enabled: true
@@ -140,7 +140,7 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.009999999776482582
       Style: Points
-      Topic: /ugv_2/lidar
+      Topic: /robot_2/lidar
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -168,7 +168,7 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.009999999776482582
       Style: Points
-      Topic: /ugv_3/lidar
+      Topic: /robot_3/lidar
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -196,7 +196,7 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.009999999776482582
       Style: Flat Squares
-      Topic: /ugv_4/lidar
+      Topic: /robot_4/lidar
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -652,9 +652,9 @@ Visualization Manager:
               Show Axes: false
               Show Trail: false
               Value: true
-          Name: ugv_1
-          Robot Description: ugv_1/robot_description
-          TF Prefix: ugv_1
+          Name: robot_1
+          Robot Description: robot_1/robot_description
+          TF Prefix: robot_1
           Update Interval: 0
           Value: true
           Visual Enabled: true
@@ -681,7 +681,7 @@ Visualization Manager:
           Size (Pixels): 3
           Size (m): 0.009999999776482582
           Style: Points
-          Topic: /ugv_1/cloud_registered
+          Topic: /robot_1/cloud_registered
           Unreliable: false
           Use Fixed Frame: true
           Use rainbow: true
@@ -709,13 +709,13 @@ Visualization Manager:
           Size (Pixels): 3
           Size (m): 0.009999999776482582
           Style: Flat Squares
-          Topic: /ugv_1/cloud_registered
+          Topic: /robot_1/cloud_registered
           Unreliable: false
           Use Fixed Frame: true
           Use rainbow: true
           Value: true
       Enabled: true
-      Name: ugv_1
+      Name: robot_1
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48

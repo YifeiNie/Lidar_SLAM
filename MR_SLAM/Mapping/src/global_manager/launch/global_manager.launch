@@ -1,9 +1,8 @@
 <launch>
-
   <param name="/use_sim_time" value="true" />
 
-  <node pkg="global_manager" type="global_manager_node" respawn="false" name="global_manager" output="screen">
-    
+  <node pkg="global_manager" type="global_manager_node" respawn="false" name="global_manager" output="screen" launch-prefix="gdb -ex run --args">
+    <!-- bool -->
     <param name="global_map_frame" value="map"/>
     <param name="robot_namespace" value=""/>   
     <param name="logger_level" value="Info"/>
@@ -17,7 +16,7 @@
     <param name="odometry_loop_enable" value="false"/>    
     <param name="loop_detection_debug" value="false"/>
     <param name="manual_robots_config" value="true"/>
-    <param name="enable_elevation_mapping" value="true"/>
+    <param name="enable_elevation_mapping" value="false"/>
     
     <!-- string  -->
     <param name="submap_topic" value="submap"/>
@@ -50,11 +49,11 @@
     <!-- icp params: registration_method choose from PCL_ICP, PCL_GICP, FAST_GICP, FAST_VGICP_CUDA-->
     <param name="registration_method" value="FAST_VGICP_CUDA"/>
     <param name="submap_size" value="1"/>
-    <param name="icp_iters" value="50"/>
-    <param name="icp_fitness_score" value="0.15"/>
+    <param name="icp_iters" value="30"/>
+    <param name="icp_fitness_score" value="0.3"/>
     <param name="icp_filter_size" value="0.2"/>
     <param name="submap_voxel_leaf_size" value="0.2"/>
-    <param name="globalmap_voxel_leaf_size" value="0.5"/>
+    <param name="globalmap_voxel_leaf_size" value="0.3"/>
 
     <param name="keyframe_search_candidates" value="10"/>
     <param name="keyframe_search_radius" value="8"/>

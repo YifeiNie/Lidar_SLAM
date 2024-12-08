@@ -95,13 +95,13 @@ bool* KeyboardCtr::get_key_input(){
 
 void KeyboardCtr::get_namespace (uint8_t num){
     std::string num_str = std::to_string(num + 1);
-    ugv_name = "/ugv_" + num_str + "/cmd_vel";
+    ugv_name = "/robot_" + num_str + "/cmd_vel";
 }
 
 void KeyboardCtr::publish_vel_cmd(){
     // std::cout << ugv_name <<std::endl;
     publisher = advertise<geometry_msgs::Twist>(ugv_name, 10);
-    setTwist(5,5,5,5,5,5);
+    setTwist(1,1,1,1,1,2);
     publisher.publish(twist_msg);
 }
 
@@ -177,7 +177,7 @@ void KeyboardCtr::setTwist(double linear_x, double linear_y, double linear_z, do
 
 int main(int argc, char** argv) {
     disableEcho();
-    const char* dev_path = "/dev/input/event10";  // 输入设备路径，根据实际情况修改
+    const char* dev_path = "/dev/input/F87keyboard";  // 输入设备路径，根据实际情况修改
     int fd = open(dev_path, O_RDONLY);
     if (fd == -1) {
         perror("Open device error");

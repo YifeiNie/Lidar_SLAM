@@ -504,7 +504,7 @@ void GlobalManager::publishTFThread()
       auto start = system_clock::now();
       
       publishTF();
-      // publishPoseGraph();
+      publishPoseGraph();
 
       auto end = system_clock::now();
       auto duration = duration_cast<microseconds>(end - start);
@@ -2116,7 +2116,7 @@ PointCloud GlobalManager::composeGlobalMap()
       pcl::fromROSMsg(srv.response.submap, *initSubmap);
       local_map_stack[subscription.robot_id - start_robot_id_] = *initSubmap;
     }else{
-      ROS_WARN("Failed to call service init map");
+      // ROS_WARN("Failed to call service init map");
     }
     init_state_vec.emplace_back(subscription.initState);
   }
@@ -2182,18 +2182,27 @@ PointCloud GlobalManager::composeGlobalMap()
           continue;
         std::lock_guard<std::mutex> lock2(subscription.mutex);
         Eigen::Isometry3f T = optMapTF[subscription.robot_id - start_robot_id_].back() * originMapTF[subscription.robot_id - start_robot_id_].back();
+        if (i == 3){
+          std::cout << "The Index is:\n" << subscription.robot_id - start_robot_id_ << std::endl; 
+          Eigen::Isometry3f optMatrix = optMapTF[subscription.robot_id - start_robot_id_].back();
+          Eigen::Isometry3f originMatrix = originMapTF[subscription.robot_id - start_robot_id_].back();
+
+          std::cout << "optMapTF.back():\n" << optMatrix.matrix() << std::endl;
+          std::cout << "originMapTF.back():\n" << originMatrix.matrix() << std::endl;   
+        }     
         Eigen::Matrix4f transformMatrix = T.matrix();
         pcl::transformPointCloud(*subscription.keyframes.back(), Keyframe, transformMatrix); 
         merged_pointcloud += Keyframe;
       }
     }
   }
+  // ROS_INFO("\033[1;31m**************** before filer %d points ****************\033[0m", (merged_pointcloud.size()));
 
   pcl::VoxelGrid<PointTI> voxel;
   voxel.setInputCloud (merged_pointcloud.makeShared());
   voxel.setLeafSize (globalmap_voxel_leaf_size_, globalmap_voxel_leaf_size_, globalmap_voxel_leaf_size_);
   voxel.filter (merged_pointcloud);
-
+  // ROS_INFO("\033[1;31m**************** after filer: %d points ****************\033[0m", (merged_pointcloud.size()));
   // pcl::PassThrough<PointT> pass;
   // pass.setInputCloud (local_maps.makeShared()); 
   // pass.setFilterFieldName ("z");
@@ -2391,9 +2400,9 @@ void GlobalManager::publishPoseGraph()
       trajMarker_.color.g = 0.0f;
       trajMarker_.color.b = 1.0f;
     }else if(i == 3){
-      trajMarker_.color.r = 0.0f;
+      trajMarker_.color.r = 1.0f;
       trajMarker_.color.g = 0.0f;
-      trajMarker_.color.b = 0.0f;
+      trajMarker_.color.b = 1.0f;
     }
     trajPoints.markers.push_back(trajMarker_);
   }

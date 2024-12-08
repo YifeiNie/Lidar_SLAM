@@ -26,19 +26,29 @@ sys.path.append(BASE_DIR)
 Pose1 = []
 Pose2 = []
 Pose3 = []
+Pose4 = []
+
 Time1 = []
 Time2 = []
 Time3 = []
+Time4 = []
+
 # main descriptors of all robots
 PC1 = []
 PC2 = []
 PC3 = []
+PC4 = []
+
 BEV1 = []
 BEV2 = []
 BEV3 = []
+BEV4 = []
+
 TIRING1 = []
 TIRING2 = []
 TIRING3 = []
+TIRING4 = []
+
 
 f = open("./loopinfo.txt", "w")
 
@@ -249,7 +259,7 @@ def callback1(data):
     # convert the point cloud to o3d point cloud
     pcd = o3d.geometry.PointCloud()
     pcd.points = o3d.utility.Vector3dVector(pc_list)
-    pcd = pcd.voxel_down_sample(voxel_size=0.2)
+    pcd = pcd.voxel_down_sample(voxel_size=0.3)
 
     pc_normalized = load_pc_infer(pcd.points)
     pc = np.asarray(pcd.points)
@@ -274,6 +284,9 @@ def callback1(data):
     # candidate robot id: 3
     robotid_candidate = 2
     detect_loop_icp(robotid_current, idx_current, pc, pc_bev, pc_TIRING, robotid_candidate, PC3, BEV3, TIRING3)
+    # candidate robot id: 4
+    robotid_candidate = 3
+    detect_loop_icp(robotid_current, idx_current, pc, pc_bev, pc_TIRING, robotid_candidate, PC4, BEV4, TIRING4)
 
     Pose1.append(se3)
     Time1.append(timestamp)
@@ -298,7 +311,7 @@ def callback2(data):
     # convert the point cloud to o3d point cloud
     pcd = o3d.geometry.PointCloud()
     pcd.points = o3d.utility.Vector3dVector(pc_list)
-    pcd = pcd.voxel_down_sample(voxel_size=0.2)
+    pcd = pcd.voxel_down_sample(voxel_size=0.3)
 
     pc_normalized = load_pc_infer(pcd.points)
     pc = np.asarray(pcd.points)
@@ -323,6 +336,9 @@ def callback2(data):
     # candidate robot id: 3
     robotid_candidate = 2
     detect_loop_icp(robotid_current, idx_current, pc, pc_bev, pc_TIRING, robotid_candidate, PC3, BEV3, TIRING3)
+    # candidate robot id: 4
+    robotid_candidate = 3
+    detect_loop_icp(robotid_current, idx_current, pc, pc_bev, pc_TIRING, robotid_candidate, PC4, BEV4, TIRING4)
 
     Pose2.append(se3)
     Time2.append(timestamp)
@@ -348,7 +364,7 @@ def callback3(data):
     # convert the point cloud to o3d point cloud
     pcd = o3d.geometry.PointCloud()
     pcd.points = o3d.utility.Vector3dVector(pc_list)
-    pcd = pcd.voxel_down_sample(voxel_size=0.2)
+    pcd = pcd.voxel_down_sample(voxel_size=0.3)
 
     pc_normalized = load_pc_infer(pcd.points)
     pc = np.asarray(pcd.points)
@@ -373,6 +389,9 @@ def callback3(data):
     # candidate robot id: 3
     # robotid_candidate = 2
     # detect_loop_icp(robotid_current, idx_current, pc, pc_TIRING, robotid_candidate, PC3, BEV3, TIRING3)
+    # candidate robot id: 4
+    robotid_candidate = 3
+    detect_loop_icp(robotid_current, idx_current, pc, pc_bev, pc_TIRING, robotid_candidate, PC4, BEV4, TIRING4)
 
     Pose3.append(se3)
     Time3.append(timestamp)
@@ -380,6 +399,57 @@ def callback3(data):
     TIRING3.append(pc_TIRING)
     BEV3.append(pc_bev)
 
+def callback4(data):
+    # current robot id
+    robotid_current = 3
+    # current robot index
+    idx_current = len(PC4)
+    # current robot timestamp
+    timestamp = data.keyframePC.header.stamp
+
+    # get the keyframe point cloud
+    pc = pc2.read_points(data.keyframePC, skip_nans=True, field_names=("x", "y", "z"))
+    pc_list = []
+    for p in pc:
+        pc_list.append([p[0],p[1],p[2]])
+
+    # convert the point cloud to o3d point cloud
+    pcd = o3d.geometry.PointCloud()
+    pcd.points = o3d.utility.Vector3dVector(pc_list)
+    pcd = pcd.voxel_down_sample(voxel_size=0.3)
+
+    pc_normalized = load_pc_infer(pcd.points)
+    pc = np.asarray(pcd.points)
+
+    # get the pose of the keyframe point cloud 
+    # convert position and quaternion pose to se3 matrix
+    se3 = get_homo_matrix_from_pose_msg(data.pose)
+
+    # generate RING and TIRING descriptors
+    times = time.time()
+    pc_bev, pc_RING, pc_TIRING = generate_RINGplusplus(pc_normalized)
+    timee = time.time()
+    print("Descriptors generated time:", timee - times, 's')
+
+    # detect the loop and apply icp
+    # candidate robot id: 1
+    robotid_candidate = 0
+    detect_loop_icp(robotid_current, idx_current, pc, pc_bev, pc_TIRING, robotid_candidate, PC1, BEV1, TIRING1)
+    # candidate robot id: 2
+    robotid_candidate = 1
+    detect_loop_icp(robotid_current, idx_current, pc, pc_bev, pc_TIRING, robotid_candidate, PC2, BEV2, TIRING2)
+    # candidate robot id: 3
+    robotid_candidate = 2
+    detect_loop_icp(robotid_current, idx_current, pc, pc_bev, pc_TIRING, robotid_candidate, PC3, BEV3, TIRING3)
+    # candidate robot id: 4
+    # robotid_candidate = 3
+    # detect_loop_icp(robotid_current, idx_current, pc, pc_bev, pc_TIRING, robotid_candidate, PC3, BEV3, TIRING3)
+
+    Pose4.append(se3)
+    Time4.append(timestamp)
+    PC4.append(pc)
+    TIRING4.append(pc_TIRING)
+    BEV4.append(pc_bev)
 
 if __name__ == "__main__":
     #### load params
@@ -395,11 +465,11 @@ if __name__ == "__main__":
     parser.add_argument('--max_length', type=int, default=1)
     parser.add_argument('--max_height', type=int, default=1)
     parser.add_argument('--dist_threshold', type=float, default=0.41) # 0.48 is usually safe (for avoiding false loop closure)
-    parser.add_argument('--max_icp_iter', type=int, default=100) # 20 iterations is usually enough
+    parser.add_argument('--max_icp_iter', type=int, default=50) # 20 iterations is usually enough
     parser.add_argument('--icp_tolerance', type=float, default=0.001) 
     parser.add_argument('--icp_max_distance', type=float, default=5.0)
     parser.add_argument('--num_icp_points', type=int, default=6000) # 6000 is enough for real time
-    parser.add_argument('--icp_fitness_score', type=float, default=0.13) # icp fitness score threshold
+    parser.add_argument('--icp_fitness_score', type=float, default=0.1) # icp fitness score threshold
 
     args = parser.parse_args()
 
@@ -424,6 +494,7 @@ if __name__ == "__main__":
     rospy.Subscriber("/robot_1/submap", SubMap, callback1)
     rospy.Subscriber("/robot_2/submap", SubMap, callback2)
     rospy.Subscriber("/robot_3/submap", SubMap, callback3)
+    rospy.Subscriber("/robot_4/submap", SubMap, callback4)
     rospy.spin()
     f.close()
     

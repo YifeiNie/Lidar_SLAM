@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.1)
 project(global_manager)
 
-set(CMAKE_BUILD_TYPE "RELEASE")
+set(CMAKE_BUILD_TYPE "DEBUG")
 
 add_definitions(-w)
 add_definitions(${GLEW_DEFINITIONS})

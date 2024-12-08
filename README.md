@@ -52,9 +52,16 @@
 - 使用RING++直接运行发现最终合并的地图出现漂移，其中一台机器人建的图和其他两个建的图没有重合，反而倾斜向上，对此修改global_manager.launch中的`icp_fitness_score`参数为0.15，增强回环检测，然后运行发现问题解决
 ### 2024.11.30 -- by nyf
 - 进行四小车仿真的时候，注意要在rviz选择delay time，然后选择cloud_registered即可看到fastlio建的点云地图
-- 代码制定了好几个进程，进程函数都命名为`xxxxThread`，进程循环执行指导程序终止
+- 代码制定了好几个进程，进程函数都命名为`xxxxThread`，进程循环执行直到程序终止
 - 进程discoveryThread中的`void GlobalManager::discovery()`用于捕获当时所有的ROS话题，并进行处理，具体操作是捕获ros当前全部话题，并筛选出map和disco的话题，并话题中获取机器人的名字，然后判断该名字是否以及出现过，如果否，机器人数量+1
 - 进程MapComposingThread中的`void GlobalManager::discoveryThread()`函数`PointCloud GlobalManager::composeGlobalMap()`
+- fastlio与MRslam的接口是`LIO_publish.cpp`文件，其中包含一个main函数，其编译后的可执行文件叫做my_node，在robot_1.launch中被调用和启动
+- 需要关闭global_manager.launch里的2.5D地图以减小计算量，即`<param name="enable_elevation_mapping" value="false"/>`
+- 在gazebo_sim和FASTLIO_sim中的若干launch文件中把ugv_x改为robot_x，以适配MR-SLAM
+- 修改FAST-LIO-sim中lasermapping里程计的话题名称为`Odometry`，以适配MR-SLAM中的LIO_Publisher将fastlio数据打包为SubMap格式的自定义数据。注意一定**不要**加'/'，即`/Odometry`，这样会导致其全局优先级最高，不会自动添加命名空间的前缀
+- 一定要先等仿真环境加载完成，然后在启动FAST-LIO
+- 机器人的id必须是连续的
+- **注意launch参数**`manual_config_dir`!如果设定为true，若要适配多机器人，要在路径`$(find global_manager)/cfg/real/`增加对应的yaml文件！！
 - 需要修改
     - void GlobalManager::publishPoseGraph()
 
