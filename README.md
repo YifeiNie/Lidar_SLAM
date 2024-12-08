@@ -61,7 +61,7 @@
 - 修改FAST-LIO-sim中lasermapping里程计的话题名称为`Odometry`，以适配MR-SLAM中的LIO_Publisher将fastlio数据打包为SubMap格式的自定义数据。注意一定**不要**加'/'，即`/Odometry`，这样会导致其全局优先级最高，不会自动添加命名空间的前缀
 - 一定要先等仿真环境加载完成，然后在启动FAST-LIO
 - 机器人的id必须是连续的
-- **注意launch参数**`manual_config_dir`!如果设定为true，若要适配多机器人，要在路径`$(find global_manager)/cfg/real/`增加对应的yaml文件！！
+- **注意launch参数!**`manual_config_dir`当设定为true，说明需要手动设置机器人的初始位姿，所以若要适配多机器人，要在路径`$(find global_manager)/cfg/real/`增加对应的yaml文件！！
 - 需要修改
     - void GlobalManager::publishPoseGraph()
 
