@@ -242,6 +242,10 @@ private:
   bool keyframeUpdated = false;
   bool mapNeedsToBeCorrected = false;
 
+  // new mutex
+  std::mutex merged_pointcloud_mutex;
+  std::mutex robot_name_mutex;
+
   // geometry check
   double icp_filter_size_;
   std::queue<std::tuple<uint64_t, uint64_t, Eigen::Isometry3d>> loops_buf;

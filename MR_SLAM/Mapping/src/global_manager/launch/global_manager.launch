@@ -49,11 +49,11 @@
     <!-- icp params: registration_method choose from PCL_ICP, PCL_GICP, FAST_GICP, FAST_VGICP_CUDA-->
     <param name="registration_method" value="FAST_VGICP_CUDA"/>
     <param name="submap_size" value="1"/>
-    <param name="icp_iters" value="30"/>
-    <param name="icp_fitness_score" value="0.3"/>
+    <param name="icp_iters" value="40"/>
+    <param name="icp_fitness_score" value="0.25"/>
     <param name="icp_filter_size" value="0.2"/>
     <param name="submap_voxel_leaf_size" value="0.2"/>
-    <param name="globalmap_voxel_leaf_size" value="0.3"/>
+    <param name="globalmap_voxel_leaf_size" value="0.5"/>
 
     <param name="keyframe_search_candidates" value="10"/>
     <param name="keyframe_search_radius" value="8"/>

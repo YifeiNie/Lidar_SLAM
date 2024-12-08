@@ -306,7 +306,7 @@ void GlobalManager::discovery()
       robot_name = robotNameFromTopic(topic.name);
 
       // !!!NOTICE: robotIDStack save the incoming robot id list, subscription doesn't hold actual robot id.
-      std::string robotID = std::regex_replace(robot_name, std::regex("[^0-9]*([0-9]+).*"), std::string("$1"));
+      std::string robotID = std::regex_replace(robot_name, std::regex("[^0-9]*([0-9]+).*"), "$1");
       
       // Check if this robot is already found
       if (robots_.count(robot_name)) {
@@ -504,7 +504,7 @@ void GlobalManager::publishTFThread()
       auto start = system_clock::now();
       
       publishTF();
-      publishPoseGraph();
+      // publishPoseGraph();
 
       auto end = system_clock::now();
       auto duration = duration_cast<microseconds>(end - start);
@@ -2211,8 +2211,10 @@ PointCloud GlobalManager::composeGlobalMap()
 
   auto merge_end = system_clock::now();
   auto merge_duration = duration_cast<microseconds>(merge_end - merge_start);
-  ROS_INFO("merge map: %lfs with %d points", double(merge_duration.count()) * microseconds::period::num / microseconds::period::den, merged_pointcloud.size());
- 
+  {
+    std::lock_guard<std::mutex> lock(merged_pointcloud_mutex);
+    ROS_INFO("merge map: %lfs with %d points", double(merge_duration.count()) * microseconds::period::num / microseconds::period::den, merged_pointcloud.size());
+  }
   ROS_DEBUG("compose Maps done.");
 
   return globalClouds;
@@ -2311,7 +2313,11 @@ void GlobalManager::publishMergedPointcloud()
   auto start = system_clock::now();
 
   sensor_msgs::PointCloud2 output;
-  pcl::toROSMsg(merged_pointcloud, output);
+  {
+    std::lock_guard<std::mutex> lock(merged_pointcloud_mutex);
+    pcl::toROSMsg(merged_pointcloud, output);
+  }
+ 
   output.header.frame_id = global_map_frame_;
   merged_pointcloud_publisher_.publish(output);
   
